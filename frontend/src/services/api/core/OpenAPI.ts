@@ -1,0 +1,42 @@
+/* generated using openapi-typescript-codegen -- do not edit */
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+import type { ApiRequestOptions } from './ApiRequestOptions';
+
+type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
+type Headers = Record<string, string>;
+
+export type OpenAPIConfig = {
+    BASE: string;
+    VERSION: string;
+    WITH_CREDENTIALS: boolean;
+    CREDENTIALS: 'include' | 'omit' | 'same-origin';
+    TOKEN?: string | Resolver<string> | undefined;
+    USERNAME?: string | Resolver<string> | undefined;
+    PASSWORD?: string | Resolver<string> | undefined;
+    HEADERS?: Headers | Resolver<Headers> | undefined;
+    ENCODE_PATH?: ((path: string) => string) | undefined;
+};
+
+export const OpenAPI: OpenAPIConfig = {
+    BASE: '', // Assuming API is served from the same origin or proxied
+    VERSION: '0.1.0',
+    WITH_CREDENTIALS: false,
+    CREDENTIALS: 'include',
+    TOKEN: async (options: ApiRequestOptions): Promise<string> => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            return token;
+        }
+        // If you need to differentiate between public and private routes,
+        // you could check options.url or a custom flag in options
+        // For now, we return an empty string if no token,
+        // or you could throw an error if a token is always expected for certain calls.
+        return '';
+    },
+    USERNAME: undefined,
+    PASSWORD: undefined,
+    HEADERS: undefined,
+    ENCODE_PATH: undefined,
+};
