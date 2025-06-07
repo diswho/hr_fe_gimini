@@ -83,8 +83,8 @@ const LeavePage: React.FC = () => {
         </Button>
       </Box>
 
-      {approveError && <Alert severity="error" sx={{ mb: 2 }}>{approveError}</Alert>}
-      {approveSuccess && <Alert severity="success" sx={{ mb: 2 }}>{approveSuccess}</Alert>}
+      {approveError && <Alert severity="error" sx={{ my: 2 }}>{approveError}</Alert>}
+      {approveSuccess && <Alert severity="success" sx={{ my: 2 }}>{approveSuccess}</Alert>}
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="leave requests table">

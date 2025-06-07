@@ -14,8 +14,11 @@ import DepartmentsPage from './pages/DepartmentsPage/DepartmentsPage';
 import DepartmentDetailPage from './pages/DepartmentDetailPage/DepartmentDetailPage';
 import SalaryPage from './pages/SalaryPage/SalaryPage';
 import SalaryComponentFormPage from './pages/SalaryComponentFormPage/SalaryComponentFormPage';
-import EmployeeSalariesPage from './pages/EmployeeSalariesPage/EmployeeSalariesPage'; // Import new page
-import EmployeeSalaryFormPage from './pages/EmployeeSalaryFormPage/EmployeeSalaryFormPage'; // Import new form page
+import EmployeeSalariesPage from './pages/EmployeeSalariesPage/EmployeeSalariesPage';
+import EmployeeSalaryFormPage from './pages/EmployeeSalaryFormPage/EmployeeSalaryFormPage';
+import PayslipsPage from './pages/PayslipsPage/PayslipsPage';
+import PayslipDetailPage from './pages/PayslipDetailPage/PayslipDetailPage';
+import PayslipFormPage from './pages/PayslipFormPage/PayslipFormPage'; // Import new form page
 import { CssBaseline } from '@mui/material';
 
 // Component to handle redirection for already authenticated users trying to access /login
@@ -65,6 +68,10 @@ function App() {
                     <Route path="employee-salaries" element={<EmployeeSalariesPage />} />
                     <Route path="employee-salaries/new" element={<EmployeeSalaryFormPage />} />
                     <Route path="employee-salaries/:employee_salary_id/edit" element={<EmployeeSalaryFormPage />} />
+                    <Route path="payslips" element={<PayslipsPage />} />
+                    <Route path="payslips/new" element={<PayslipFormPage />} />
+                    <Route path="payslips/:payslip_id" element={<PayslipDetailPage />} />
+                    <Route path="payslips/:payslip_id/edit" element={<PayslipFormPage />} />
                     <Route index element={<Navigate to="dashboard" replace />} />
                   </Route>
                 </Routes>

@@ -88,6 +88,7 @@ const EmployeesPage: React.FC = () => {
                     component={RouterLink}
                     to={`/employees/${employee.id}`}
                     aria-label="edit employee"
+                    size="small"
                   >
                     <EditIcon />
                   </IconButton>
