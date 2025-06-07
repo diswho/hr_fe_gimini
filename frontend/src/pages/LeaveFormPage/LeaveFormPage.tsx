@@ -155,7 +155,7 @@ const LeaveFormPage: React.FC = () => {
         </Button>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField
                 name="employee_id"
                 label="Employee ID"
@@ -167,7 +167,7 @@ const LeaveFormPage: React.FC = () => {
                 disabled={isEditMode} // Usually Employee ID is not editable
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField
                 name="leave_type"
                 label="Leave Type"
@@ -184,7 +184,7 @@ const LeaveFormPage: React.FC = () => {
                 ))}
               </TextField>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField
                 name="start_date"
                 label="Start Date"
@@ -196,7 +196,7 @@ const LeaveFormPage: React.FC = () => {
                 required
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField
                 name="end_date"
                 label="End Date"
@@ -208,7 +208,7 @@ const LeaveFormPage: React.FC = () => {
                 required
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item sx={{ width: '100%' }}>
               <TextField
                 name="reason"
                 label="Reason"
@@ -219,7 +219,7 @@ const LeaveFormPage: React.FC = () => {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
                <TextField
                 name="status"
                 label="Status"
@@ -237,7 +237,7 @@ const LeaveFormPage: React.FC = () => {
                 ))}
               </TextField>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField
                 name="approver_id"
                 label="Approver ID (Optional)"

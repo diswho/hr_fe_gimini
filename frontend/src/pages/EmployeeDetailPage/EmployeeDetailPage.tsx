@@ -149,37 +149,37 @@ const EmployeeDetailPage: React.FC = () => {
         </Button>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField name="emp_firstname" label="First Name" value={formData.emp_firstname || ''} onChange={handleChange} fullWidth required />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField name="emp_lastname" label="Last Name" value={formData.emp_lastname || ''} onChange={handleChange} fullWidth />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField name="emp_email" label="Email" type="email" value={formData.emp_email || ''} onChange={handleChange} fullWidth />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField name="emp_phone" label="Phone" value={formData.emp_phone || ''} onChange={handleChange} fullWidth />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField name="emp_role" label="Role" value={formData.emp_role || ''} onChange={handleChange} fullWidth />
             </Grid>
-             <Grid item xs={12} sm={6}>
+             <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField name="department_id" label="Department ID" type="number" value={formData.department_id === undefined ? '' : formData.department_id} onChange={handleChange} fullWidth
                 onWheel={(e) => (e.target as HTMLElement).blur()} // Prevent scroll from changing number
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField name="emp_hiredate" label="Hire Date" type="date" value={formData.emp_hiredate || ''} onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField name="emp_active" label="Active" select SelectProps={{ native: true }} name="emp_active" value={formData.emp_active ? 'true' : 'false'} onChange={handleChange} fullWidth>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
+              <TextField name="emp_active" label="Active" select SelectProps={{ native: true }} value={formData.emp_active ? 'true' : 'false'} onChange={handleChange} fullWidth>
                 <option value="true">Yes</option>
                 <option value="false">No</option>
               </TextField>
             </Grid>
             {/* Add more fields as necessary, e.g., address, status, etc. */}
-             <Grid item xs={12}>
+             <Grid item sx={{ width: '100%' }}>
                 <TextField name="emp_address" label="Address" value={formData.emp_address || ''} onChange={handleChange} fullWidth multiline rows={3} />
             </Grid>
           </Grid>
