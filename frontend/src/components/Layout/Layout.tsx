@@ -9,7 +9,7 @@ import { AppDispatch } from '../../store/store';
 const drawerWidth = 240;
 
 const mainNavItems = [
-  { text: 'Dashboard', path: '/dashboard', icon: null }, // Add icons later if desired
+  { text: 'Dashboard', path: '/dashboard', icon: null },
   { text: 'Employees', path: '/employees', icon: null },
   { text: 'Leave', path: '/leave', icon: null },
   { text: 'Departments', path: '/departments', icon: null },
@@ -18,6 +18,7 @@ const mainNavItems = [
 const salaryNavItems = [
   { text: 'Salary Components', path: '/salary', icon: null },
   { text: 'Employee Salaries', path: '/employee-salaries', icon: null },
+  { text: 'Payslips', path: '/payslips', icon: null },
 ];
 
 
@@ -102,8 +103,9 @@ const Layout: React.FC = () => {
               </Button>
             ))}
             {/* Simple dropdown for Salary for now, can be improved with Menu component */}
-            <Button sx={{ color: '#fff' }} component={Link} to="/salary">Salary Components</Button>
-            <Button sx={{ color: '#fff' }} component={Link} to="/employee-salaries">Employee Salaries</Button>
+            <Button sx={{ color: '#fff' }} component={Link} to="/salary">Salary Comp.</Button>
+            <Button sx={{ color: '#fff' }} component={Link} to="/employee-salaries">Emp. Salaries</Button>
+            <Button sx={{ color: '#fff' }} component={Link} to="/payslips">Payslips</Button>
             <Button color="inherit" onClick={handleLogout}>
               Logout
             </Button>

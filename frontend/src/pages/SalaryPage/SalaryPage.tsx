@@ -91,8 +91,8 @@ const SalaryPage: React.FC = () => {
         </Button>
       </Box>
 
-      {deleteError && <Alert severity="error" sx={{ mb: 2 }}>{deleteError}</Alert>}
-      {deleteSuccess && <Alert severity="success" sx={{ mb: 2 }}>{deleteSuccess}</Alert>}
+      {deleteError && <Alert severity="error" sx={{ my: 2 }}>{deleteError}</Alert>}
+      {deleteSuccess && <Alert severity="success" sx={{ my: 2 }}>{deleteSuccess}</Alert>}
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="salary components table">
@@ -119,12 +119,12 @@ const SalaryPage: React.FC = () => {
                 <TableCell>{component.description || 'N/A'}</TableCell>
                 <TableCell>
                   <Tooltip title="Edit Component">
-                    <IconButton component={RouterLink} to={`/salary/components/${component.id}/edit`} aria-label="edit salary component">
+                    <IconButton component={RouterLink} to={`/salary/components/${component.id}/edit`} aria-label="edit salary component" size="small">
                       <EditIcon />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Delete Component">
-                    <IconButton onClick={() => handleDeleteClick(component)} aria-label="delete salary component" color="error">
+                    <IconButton onClick={() => handleDeleteClick(component)} aria-label="delete salary component" color="error" size="small">
                       <DeleteIcon />
                     </IconButton>
                   </Tooltip>

@@ -5,29 +5,32 @@ import {
   TableHead, TableRow, Paper, Button, CircularProgress, Alert, IconButton, Box, Tooltip,
   Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import { HrEmployeeSalariesService, EmployeeSalaryInDB } from '../../services/api';
+import { HrPayslipsService, PayslipInDB } from '../../services/api';
 
-const EmployeeSalariesPage: React.FC = () => {
-  const [salaries, setSalaries] = useState<EmployeeSalaryInDB[]>([]);
+const PayslipsPage: React.FC = () => {
+  const [payslips, setPayslips] = useState<PayslipInDB[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [deleteSuccess, setDeleteSuccess] = useState<string | null>(null);
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [salaryToDelete, setSalaryToDelete] = useState<EmployeeSalaryInDB | null>(null);
+  const [payslipToDelete, setPayslipToDelete] = useState<PayslipInDB | null>(null);
 
-  const fetchEmployeeSalaries = useCallback(async () => {
+  const fetchPayslips = useCallback(async () => {
     setLoading(true);
     setError(null);
+    setDeleteError(null);
+    setDeleteSuccess(null);
     try {
-      const response = await HrEmployeeSalariesService.readEmployeeSalariesApiV1HrEmployeeSalariesGet(0, 200);
-      setSalaries(response);
+      const response = await HrPayslipsService.readPayslipsApiV1HrPayslipsGet(0, 100);
+      setPayslips(response);
     } catch (err: any) {
-      setError(err.message || 'Failed to fetch employee salaries');
+      setError(err.message || 'Failed to fetch payslips');
       console.error(err);
     } finally {
       setLoading(false);
@@ -35,35 +38,35 @@ const EmployeeSalariesPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetchEmployeeSalaries();
-  }, [fetchEmployeeSalaries]);
+    fetchPayslips();
+  }, [fetchPayslips]);
 
-  const handleDeleteClick = (salary: EmployeeSalaryInDB) => {
-    setSalaryToDelete(salary);
+  const handleDeleteClick = (payslip: PayslipInDB) => {
+    setPayslipToDelete(payslip);
     setOpenDeleteDialog(true);
     setDeleteError(null);
     setDeleteSuccess(null);
   };
 
   const handleDeleteConfirm = async () => {
-    if (!salaryToDelete) return;
+    if (!payslipToDelete) return;
     try {
-      await HrEmployeeSalariesService.deleteEmployeeSalaryApiV1HrEmployeeSalariesEmployeeSalaryIdDelete(salaryToDelete.id);
-      setDeleteSuccess(`Employee salary record (ID: ${salaryToDelete.id}) deleted successfully.`);
-      fetchEmployeeSalaries();
+      await HrPayslipsService.deletePayslipApiV1HrPayslipsPayslipIdDelete(payslipToDelete.id);
+      setDeleteSuccess(`Payslip #${payslipToDelete.id} deleted successfully.`);
+      fetchPayslips();
     } catch (err: any) {
-      const errorMsg = err.body?.detail || err.message || `Failed to delete salary record ID ${salaryToDelete.id}`;
+      const errorMsg = err.body?.detail || err.message || `Failed to delete payslip #${payslipToDelete.id}`;
       setDeleteError(errorMsg);
       console.error(err);
     } finally {
       setOpenDeleteDialog(false);
-      setSalaryToDelete(null);
+      setPayslipToDelete(null);
     }
   };
 
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
-    setSalaryToDelete(null);
+    setPayslipToDelete(null);
   };
 
   const formatDate = (dateString: string | null | undefined) => {
@@ -83,16 +86,16 @@ const EmployeeSalariesPage: React.FC = () => {
     <Container sx={{ mt: 2 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <Typography variant="h4" component="h1">
-          Employee Salary Records
+          Payslips
         </Typography>
         <Button
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
           component={RouterLink}
-          to="/employee-salaries/new"
+          to="/payslips/new"
         >
-          Assign Salary Component
+          Create New Payslip
         </Button>
       </Box>
 
@@ -100,38 +103,43 @@ const EmployeeSalariesPage: React.FC = () => {
       {deleteSuccess && <Alert severity="success" sx={{ my: 2 }}>{deleteSuccess}</Alert>}
 
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="employee salaries table">
+        <Table sx={{ minWidth: 650 }} aria-label="payslips table">
           <TableHead>
             <TableRow>
-              <TableCell>Record ID</TableCell>
+              <TableCell>ID</TableCell>
               <TableCell>Employee ID</TableCell>
-              <TableCell>Component ID</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell>Effective Date</TableCell>
-              <TableCell>End Date</TableCell>
+              <TableCell>Pay Period Start</TableCell>
+              <TableCell>Pay Period End</TableCell>
+              <TableCell>Payment Date</TableCell>
+              <TableCell>Net Pay</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {salaries.length === 0 && !loading && (
-              <TableRow><TableCell colSpan={7} align="center">No employee salary records found.</TableCell></TableRow>
+            {payslips.length === 0 && !loading && (
+              <TableRow><TableCell colSpan={7} align="center">No payslips found.</TableCell></TableRow>
             )}
-            {salaries.map((salary) => (
-              <TableRow key={salary.id}>
-                <TableCell>{salary.id}</TableCell>
-                <TableCell>{salary.employee_id}</TableCell>
-                <TableCell>{salary.component_id}</TableCell>
-                <TableCell>{salary.amount}</TableCell>
-                <TableCell>{formatDate(salary.effective_date)}</TableCell>
-                <TableCell>{formatDate(salary.end_date)}</TableCell>
+            {payslips.map((payslip) => (
+              <TableRow key={payslip.id}>
+                <TableCell>{payslip.id}</TableCell>
+                <TableCell>{payslip.employee_id}</TableCell>
+                <TableCell>{formatDate(payslip.pay_period_start_date)}</TableCell>
+                <TableCell>{formatDate(payslip.pay_period_end_date)}</TableCell>
+                <TableCell>{formatDate(payslip.payment_date)}</TableCell>
+                <TableCell>{payslip.net_pay.toFixed(2)}</TableCell>
                 <TableCell>
-                  <Tooltip title="Edit Record">
-                    <IconButton component={RouterLink} to={`/employee-salaries/${salary.id}/edit`} aria-label="edit employee salary" size="small">
+                  <Tooltip title="View Details">
+                    <IconButton component={RouterLink} to={`/payslips/${payslip.id}`} aria-label="view payslip details" size="small">
+                      <VisibilityIcon />
+                    </IconButton>
+                  </Tooltip>
+                   <Tooltip title="Edit Payslip (Main Fields)">
+                    <IconButton component={RouterLink} to={`/payslips/${payslip.id}/edit`} aria-label="edit payslip" size="small">
                       <EditIcon />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Delete Record">
-                    <IconButton onClick={() => handleDeleteClick(salary)} aria-label="delete employee salary" color="error" size="small">
+                  <Tooltip title="Delete Payslip">
+                    <IconButton onClick={() => handleDeleteClick(payslip)} aria-label="delete payslip" color="error" size="small">
                       <DeleteIcon />
                     </IconButton>
                   </Tooltip>
@@ -142,11 +150,13 @@ const EmployeeSalariesPage: React.FC = () => {
         </Table>
       </TableContainer>
 
+      {/* Delete Confirmation Dialog */}
       <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this employee salary record (ID: {salaryToDelete?.id})? This action cannot be undone.
+            Are you sure you want to delete payslip #{payslipToDelete?.id} for employee ID {payslipToDelete?.employee_id}?
+            This action cannot be undone.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -160,4 +170,4 @@ const EmployeeSalariesPage: React.FC = () => {
   );
 };
 
-export default EmployeeSalariesPage;
+export default PayslipsPage;
