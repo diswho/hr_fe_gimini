@@ -69,7 +69,7 @@ const DepartmentDetailPage: React.FC = () => {
           Back
         </Button>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
+          <Grid item sx={{ width: '100%', md: { flexBasis: '50%', maxWidth: '50%' } }}>
             <List dense>
               <ListItem>
                 <ListItemText primary="Department ID" secondary={displayValue(department.id)} />
@@ -85,7 +85,7 @@ const DepartmentDetailPage: React.FC = () => {
               </ListItem>
             </List>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item sx={{ width: '100%', md: { flexBasis: '50%', maxWidth: '50%' } }}>
             <List dense>
               <ListItem>
                 <ListItemText primary="Company ID" secondary={displayValue(department.company_id)} />

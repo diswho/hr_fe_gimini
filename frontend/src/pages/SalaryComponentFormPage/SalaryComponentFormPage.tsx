@@ -129,7 +129,7 @@ const SalaryComponentFormPage: React.FC = () => {
         </Button>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField
                 name="name"
                 label="Component Name"
@@ -139,7 +139,7 @@ const SalaryComponentFormPage: React.FC = () => {
                 required
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item sx={{ width: '100%', sm: { flexBasis: '50%', maxWidth: '50%' } }}>
               <TextField
                 name="type"
                 label="Component Type"
@@ -156,12 +156,12 @@ const SalaryComponentFormPage: React.FC = () => {
                 ))}
               </TextField>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item sx={{ width: '100%' }}>
               <FormControlLabel
                 control={
                   <Switch
                     name="is_earning"
-                    checked={formData.is_earning}
+                    checked={!!formData.is_earning}
                     onChange={handleChange}
                     color="primary"
                   />
@@ -169,7 +169,7 @@ const SalaryComponentFormPage: React.FC = () => {
                 label="Is Earning Component?"
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item sx={{ width: '100%' }}>
               <TextField
                 name="description"
                 label="Description (Optional)"
