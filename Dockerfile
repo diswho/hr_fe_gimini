@@ -1,2 +1,2 @@
-FROM alpine  
-CMD ["echo", "Hello World!!"]
+FROM nginx:alpine
+COPY ./index.html /usr/share/nginx/html
