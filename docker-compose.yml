@@ -1,0 +1,88 @@
+# docker-compose.yml
+# version: "3.8"
+
+services:
+  db:
+    image: postgres:12 # Or use 'build: .' if you want compose to build it
+    container_name: postgres_db_container
+
+    env_file:
+      - ./.env
+
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD?Variable not set}
+      POSTGRES_USER: ${POSTGRES_USER?Variable not set}
+      POSTGRES_DB: ${POSTGRES_DB?Variable not set}
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - db_data:/var/lib/postgresql/data/pgdata
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    # The 'db' service also needs to be on the 'default' network (implicitly)
+    # and potentially the 'traefik-public' network if Traefik needs to route to it
+    # directly for some reason (less common for a database).
+    # If other services connect to 'db' using the default internal Docker network,
+    # you don't explicitly need to list 'default' here.
+    networks:
+      - default # This is often implicitly created and used
+      # - traefik-public # Only if Traefik needs to access it directly, which is rare for a DB.
+
+  adminer:
+    image: adminer:latest # Use the official Adminer Docker image
+    container_name: adminer_container # Optional: give your container a specific name
+
+    ports:
+      - "8080:8080" # Expose Adminer on port 8080
+
+    networks:
+      - traefik-public # To be accessible by Traefik
+      - default # To connect to the 'db' service (which is on the default network)
+
+    depends_on:
+      # Ensures the 'db' service starts before 'adminer'.
+      # Note: depends_on only guarantees start order, not readiness.
+      # For true readiness, healthchecks are preferred.
+      db:
+        condition: service_healthy # Wait for the 'db' service to be healthy
+
+    environment:
+      # ADMINER_DEFAULT_SERVER: db # You can set the default server to the 'db' service name
+      ADMINER_DESIGN: pepa-linha-dark # Set the Adminer theme
+
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.constraint-label=traefik-public
+      - traefik.http.routers.${STACK_NAME?Variable not set}-adminer-http.rule=Host(`adminer.${DOMAIN?Variable not set}`)
+      - traefik.http.routers.${STACK_NAME?Variable not set}-adminer-http.entrypoints=http
+      - traefik.http.routers.${STACK_NAME?Variable not set}-adminer-http.middlewares=https-redirect@docker # Assuming 'https-redirect' middleware is defined globally in Traefik or as a dynamic config
+      - traefik.http.routers.${STACK_NAME?Variable not set}-adminer-https.rule=Host(`adminer.${DOMAIN?Variable not set}`)
+      - traefik.http.routers.${STACK_NAME?Variable not set}-adminer-https.entrypoints=https
+      - traefik.http.routers.${STACK_NAME?Variable not set}-adminer-https.tls=true
+      - traefik.http.routers.${STACK_NAME?Variable not set}-adminer-https.tls.certresolver=le # 'le' for Let's Encrypt, replace with your resolver name
+      - traefik.http.services.${STACK_NAME?Variable not set}-adminer.loadbalancer.server.port=8080 # Adminer listens on port 8080
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+
+volumes:
+  db_data:
+
+# Define the networks
+networks:
+  traefik-public: # This network should be external and managed by your Traefik setup
+    external: true
+  # default:# This is the bridge network for internal communication among compose services
+  # No 'external: true' here, Docker Compose creates it by default.
+  # You can explicitly define it for clarity or if you need custom settings.
